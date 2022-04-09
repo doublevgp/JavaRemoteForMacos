@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/ctx_hotkey"
+        android:title="弹出热键菜单" />
+    <item
+        android:id="@+id/ctx_download"
+        android:title="下载文件" />
+    <item
+        android:id="@+id/ctx_delete"
+        android:title="删除文件" />
+    <item
+        android:id="@+id/ctx_copy"
+        android:title="拷贝文件" />
+</menu>

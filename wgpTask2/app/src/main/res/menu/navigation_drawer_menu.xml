@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu app:itemIconTint="@color/colorAccent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/common_connections"
+            android:icon="@drawable/link"
+            android:title="常用连接" />
+        <item
+            android:id="@+id/file_manager"
+            android:icon="@drawable/forklift"
+            android:title="文件管理器" />
+        <item
+            android:id="@+id/analog_touchpad"
+            android:icon="@drawable/touchpad"
+            android:title="模拟触摸板" />
+    </group>
+
+    <item android:title="更多功能">
+        <menu>
+            <item
+                android:id="@+id/hotkey_menu"
+                android:icon="@drawable/hot_key"
+                android:title="热键菜单" />
+            <item
+                android:id="@+id/combokey_menu"
+                android:icon="@drawable/combo_key"
+                android:title="组合键菜单" />
+            <item
+                android:id="@+id/downloadList"
+                android:icon="@drawable/download"
+                android:title="下载列表" />
+            <item
+                android:id="@+id/uploadList"
+                android:icon="@drawable/upload"
+                android:title="上传列表" />
+        </menu>
+    </item>
+
+    <item android:title="其他说明">
+        <menu>
+            <item
+                android:id="@+id/accountLogin"
+                android:icon="@drawable/account_login"
+                android:title="账号登录" />
+            <item
+                android:id="@+id/aboutUs"
+                android:icon="@drawable/about_us"
+                android:title="关于" />
+            <item
+                android:id="@+id/contactUs"
+                android:icon="@drawable/contact_us"
+                android:title="联系我们" />
+        </menu>
+    </item>
+</menu>

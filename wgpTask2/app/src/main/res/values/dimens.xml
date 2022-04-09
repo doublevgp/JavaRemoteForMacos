@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- 侧滑图标与文字间距 -->
+    <dimen name="design_navigation_icon_padding" tools:override="true">3dp</dimen>
+    <dimen name="design_navigation_icon_size" tools:override="true">17dp</dimen>
+</resources>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/combokey_fragment.xml" value="0.14895833333333333" />
+        <entry key="app/src/main/res/layout/connect_fragment.xml" value="0.18478260869565216" />
+        <entry key="app/src/main/res/layout/content_layout.xml" value="0.1983695652173913" />
+        <entry key="app/src/main/res/layout/dialog_row_view.xml" value="0.18478260869565216" />
+        <entry key="app/src/main/res/layout/dialog_view.xml" value="0.14895833333333333" />
+        <entry key="app/src/main/res/layout/downloadlist_fragment.xml" value="0.14895833333333333" />
+        <entry key="app/src/main/res/layout/drawer_menu_layout.xml" value="0.1983695652173913" />
+        <entry key="app/src/main/res/layout/home_fragment.xml" value="0.28229166666666666" />
+        <entry key="app/src/main/res/layout/hotkey_fragment.xml" value="0.14895833333333333" />
+        <entry key="app/src/main/res/layout/hotkey_home_fragment.xml" value="0.14895833333333333" />
+        <entry key="app/src/main/res/layout/hotkey_home_grid_row_view.xml" value="0.14895833333333333" />
+        <entry key="app/src/main/res/layout/list_row_view.xml" value="0.24365942028985507" />
+        <entry key="app/src/main/res/layout/navigation_drawer_header.xml" value="0.14895833333333333" />
+        <entry key="app/src/main/res/layout/recycleritem.xml" value="0.16770833333333332" />
+        <entry key="app/src/main/res/layout/single_hotkey_fragment.xml" value="0.16770833333333332" />
+        <entry key="app/src/main/res/layout/touch_pad.xml" value="0.16770833333333332" />
+        <entry key="app/src/main/res/layout/touchpad_fragment.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/uploadlist_fragment.xml" value="0.14895833333333333" />
+        <entry key="app/src/main/res/layout/usuallink_fragment.xml" value="0.28229166666666666" />
+        <entry key="app/src/main/res/layout/usuallink_row_view.xml" value="0.24365942028985507" />
+        <entry key="app/src/main/res/menu/link_list_ctx_menu.xml" value="0.14895833333333333" />
+        <entry key="app/src/main/res/menu/list_view_ctx_menu.xml" value="0.28229166666666666" />
+        <entry key="app/src/main/res/menu/navigation_drawer_menu.xml" value="0.1" />
+        <entry key="app/src/main/res/menu/opt_menu.xml" value="0.28229166666666666" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
