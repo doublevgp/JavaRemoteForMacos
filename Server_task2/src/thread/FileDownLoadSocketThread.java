@@ -1,24 +1,47 @@
 package thread;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.SocketException;
 
-public class FileDownLoadSocketThread extends Thread {
-    private ServerSocket serverSocket;
-    private long filePos=0l;
-    private File file;
-
+public class FileDownLoadSocketThread extends FileSocket {
     public FileDownLoadSocketThread(File file,long filePos) {
-        // TODO Auto-generated constructor stub
-        try {
-            serverSocket = new ServerSocket(0);//动态分配可用端口
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        this.file=file;
-        this.filePos=filePos;
-
+        super(file, filePos);
     }
+    public final void exe() throws IOException {
+        byte[] arrayOfByte = new byte[8192];
+        Socket localSocket = this.serverSocket.accept();
+        FileInputStream localFileInputStream = new FileInputStream(this.file);
+        if (this.fileSize < this.file.length()) {
+            localFileInputStream.skip(this.fileSize);
+            BufferedInputStream localBufferedInputStream = new BufferedInputStream(localFileInputStream);
+            OutputStream localOutputStream = localSocket.getOutputStream();
+            BufferedOutputStream localBufferedOutputStream = new BufferedOutputStream(localOutputStream);
+            while (true) {
+                int i;
+                if (((i = localBufferedInputStream.read(arrayOfByte)) != -1) && (localSocket != null) && (!localSocket.isClosed()))
+                    try {
+                        localBufferedOutputStream.write(arrayOfByte, 0, i);
+                        localBufferedOutputStream.flush();
+                    }
+                    catch (SocketException localSocketException) {
+                        System.out.println(localSocketException.getMessage());
+                        break;
+                    }
+            }
+            localBufferedInputStream.close();
+            localFileInputStream.close();
+            localBufferedOutputStream.close();
+            localOutputStream.close();
+            close();
+            System.out.println(this.file.getName() + " download finished!");
+            return;
+        }
+        localFileInputStream.close();
+        localSocket.close();
+        close();
+        System.out.println("pos>file length!");
+    }
+
 }

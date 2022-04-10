@@ -3,6 +3,15 @@ package wgp.task2.utils;
 import wgp.task2.R;
 
 public class FileIconUtil {
+    public static String getFileSuffixName(String file_name) {
+        String[] split = file_name.split("\\.");//要使用\\转义符
+        if (split.length > 0) {
+            String suffixName = split[split.length - 1];
+            return suffixName;
+        } else {
+            return "";
+        }
+    }
     public static int ChoseFileIconByFileSuffixName(String suffixName) {
         int ret = 0;
         switch (suffixName) {

@@ -1,4 +1,4 @@
 package operator;
 
-public class BaseOperator {
+public abstract class BaseOperator {
 }

@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import wgp.task2.data.DlfData;
 import wgp.task2.data.LinkData;
 
 public class RemoteDataBase {
@@ -23,8 +24,16 @@ public class RemoteDataBase {
     public static final String KEY_COMBO_KEY_NAME = "combo_key_name";
     public static final String KEY_COMBO_KEY_CMD = "combo_key_cmd";
     public static final String KEY_FILE_TYPE = "file_type"; // default 默认 pdf ppt doc excel ...
-    public static final String KEY_LEVEL = "level";
-    public static final String KEY_LOOK_UP = "key_look_up";
+//    public static final String KEY_LEVEL = "level";
+//    public static final String KEY_LOOK_UP = "key_look_up";
+    public static final String KEY_FILE_NAME = "file_name";
+    public static final String KEY_FILE_SIZE = "file_size";
+    public static final String KEY_FILE_PATH = "file_path";
+    public static final String KEY_DOWN_SIZE = "down_size";
+    public static final String KEY_DOWN_IP = "down_ip";
+    public static final String KEY_DOWN_PORT = "down_port";
+//    private static final String DB_NAME = "filedb.db";
+    public static final String FILE_TABLE = "download";
     private static final String DB_NAME = "remote.db";
     public static final String LINK_TABLE = "link";
     public static final String HOT_KEY_TABLE = "hot_key";
@@ -61,6 +70,17 @@ public class RemoteDataBase {
         return cv;
     }
 
+    private ContentValues enCodeCotentValues(DlfData data) {
+        ContentValues cv = new ContentValues();
+        cv.put(KEY_FILE_NAME, data.getFile_name());
+        cv.put(KEY_FILE_PATH, data.getFile_path());
+        cv.put(KEY_FILE_SIZE, data.getFile_size());
+        cv.put(KEY_DOWN_SIZE, data.getFile_down_size());
+        cv.put(KEY_DOWN_IP, data.getIp());
+        cv.put(KEY_DOWN_PORT, data.getPort());
+        return cv;
+    }
+
     public LinkData queryLinkDataById(int id) {
         String sql = String.format("select * from %s where _id=%d", LINK_TABLE, id);
         ArrayList<LinkData> list = getCityListBySql(sql, null);
@@ -70,26 +90,7 @@ public class RemoteDataBase {
         return null;
     }
 
-//    private String generateLookup(City city) {
-//        String name = city.getName();
-//        String enName = city.getEnName();
-//        String initialName = city.getInitialName();
-//        String[] enNameArray = enName.split("\\s");
-//        StringBuilder sb = new StringBuilder();
-//        sb.append(name + " ");
-//        sb.append(enName + " ");
-//        sb.append(initialName + " ");
-//        sb.append(enName.replaceAll("\\s", "") + " ");
-//        for (int i = 1; i < enNameArray.length; i++) {
-//            sb.append(initialName.substring(0, i));
-//            for (int j = i; j < enNameArray.length; j++) {
-//                sb.append(enNameArray[j]);
-//            }
-//            sb.append(" ");
-//        }
-//        return sb.toString();
-//    }
-//
+    // region getFromCursor
     private LinkData getCityFromCursor(Cursor c) {
         @SuppressLint("Range") String name = c.getString(c.getColumnIndex(KEY_LINK_NAME));
         @SuppressLint("Range") String link_ip = c.getString(c.getColumnIndex(KEY_LINK_IP));
@@ -99,15 +100,35 @@ public class RemoteDataBase {
         data.setId(id);
         return data;
     }
-
+    private DlfData getDlfDataFromCursor(Cursor c) {
+        @SuppressLint("Range") String name = c.getString(c.getColumnIndex(KEY_FILE_NAME));
+        @SuppressLint("Range") String path = c.getString(c.getColumnIndex(KEY_FILE_PATH));
+        @SuppressLint("Range") long filesz = c.getLong(c.getColumnIndex(KEY_FILE_SIZE));
+        @SuppressLint("Range") long downsz = c.getLong(c.getColumnIndex(KEY_DOWN_SIZE));
+        @SuppressLint("Range") String ip = c.getString(c.getColumnIndex(KEY_DOWN_IP));
+        @SuppressLint("Range") int port = c.getInt(c.getColumnIndex(KEY_DOWN_PORT));
+        DlfData data = new DlfData(name, path, filesz, downsz, ip, port);
+        return data;
+    }
+    // endregion
+    // region insertData
     public long insertData(LinkData data) {
         ContentValues cv = enCodeCotentValues(data);
         return db.insert(LINK_TABLE, KEY_LINK_NAME, cv);
     }
+    public long insertData(DlfData data) {
+        ContentValues cv = enCodeCotentValues(data);
+        return db.insert(FILE_TABLE, KEY_FILE_NAME, cv);
+    }
+    // endregion
+    // region deleteData
+    public int deleteLinkData(DlfData data) {
+        return db.delete(FILE_TABLE, "file_name=? and file_path=?", new String[]{data.getFile_name(), data.getFile_path()});
+    }
     public int deleteLinkData(LinkData data) {
         return db.delete(LINK_TABLE, "_id=?", new String[]{String.valueOf(data.getId())});
     }
-
+    // endregion
     public int insertList(ArrayList<LinkData> list) {
         int count = 0;
         for (int i = 0; i < list.size(); i++) {
@@ -124,7 +145,7 @@ public class RemoteDataBase {
             databaseHelper.resetData(db);
         }
     }
-
+    // region getCityListFromCursor
     public ArrayList<LinkData> getCityListFromCursor(Cursor c) {
         ArrayList<LinkData> list = new ArrayList<>();
         for (int i = 0; i < c.getCount(); i++) {
@@ -134,10 +155,27 @@ public class RemoteDataBase {
         }
         return list;
     }
+    public ArrayList<DlfData> getDownFileListFromCursor(Cursor c) {
+        ArrayList<DlfData> list = new ArrayList<>();
+        for (int i = 0; i < c.getCount(); i++) {
+            c.moveToPosition(i);
+            DlfData dlfData = getDlfDataFromCursor(c);
+            list.add(dlfData);
+        }
+        return list;
+    }
+    // endregion
+    public void updateFileData() {
 
+    }
+    // region getDataList
     public ArrayList<LinkData> getLinkDataList() {
         String sql = String.format("select * from %s", LINK_TABLE);
         return getCityListBySql(sql, null);
+    }
+    public ArrayList<DlfData> getDownloadFileList() {
+        String sql = String.format("select * from %s", FILE_TABLE);
+        return getDownloadFileListBySql(sql, null);
     }
 
     private ArrayList<LinkData> getCityListBySql(String sql, String[] args) {
@@ -146,7 +184,13 @@ public class RemoteDataBase {
         c.close();
         return list;
     }
-
+    private ArrayList<DlfData> getDownloadFileListBySql(String sql, String[] args) {
+        Cursor c = db.rawQuery(sql, args);
+        ArrayList<DlfData> list = getDownFileListFromCursor(c);
+        c.close();
+        return list;
+    }
+    // endregion
 
     class DatabaseHelper extends SQLiteOpenHelper {
         public DatabaseHelper() {
@@ -170,6 +214,10 @@ public class RemoteDataBase {
                             "(_id INTEGER PRIMARY KEY AUTOINCREMENT, %s text, %s text)",
                     COMBO_KEY_TABLE, KEY_COMBO_KEY_NAME, KEY_COMBO_KEY_CMD);
             db.execSQL(sql);
+            sql = String.format("create table if not exists %s " +
+                            "(_id INTEGER PRIMARY KEY AUTOINCREMENT, %s text, %s text, %s long, %s long, %s text, %s int)",
+                    FILE_TABLE, KEY_FILE_NAME, KEY_FILE_PATH, KEY_FILE_SIZE, KEY_DOWN_SIZE, KEY_DOWN_IP, KEY_DOWN_PORT);
+            db.execSQL(sql);
         }
 
         @Override
@@ -184,8 +232,14 @@ public class RemoteDataBase {
             db.execSQL(sql);
             sql = String.format("drop table if exists %s", COMBO_KEY_TABLE);
             db.execSQL(sql);
+            sql = String.format("drop table if exists %s", FILE_TABLE);
+            db.execSQL(sql);
             onCreate(db);
         }
-
+        public void resetDataByTableName(SQLiteDatabase db, String table_name) {
+            String sql = String.format("drop table if exists %s", table_name);
+            db.execSQL(sql);
+            onCreate(db);
+        }
     }
 }

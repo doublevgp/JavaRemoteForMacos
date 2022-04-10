@@ -16,7 +16,7 @@ import static Utils.FilePathUtil.combineHierDir;
 import static java.awt.Toolkit.getDefaultToolkit;
 import static java.lang.Math.min;
 import static java.lang.Math.max;
-public class KEY {
+public class KEY extends BaseOperator {
     Robot r;
     HashMap<String, Integer> KEY_MAP;
     Toolkit toolkit;
@@ -44,6 +44,8 @@ public class KEY {
         KEY_MAP.put("ENTER", KeyEvent.VK_ENTER);
         KEY_MAP.put("EQUALS", KeyEvent.VK_EQUALS);
         KEY_MAP.put("MINUS", KeyEvent.VK_MINUS);
+        KEY_MAP.put("UP", KeyEvent.VK_UP);
+        KEY_MAP.put("DOWN", KeyEvent.VK_DOWN);
         KEY_MAP.put("F1", KeyEvent.VK_F1);
         KEY_MAP.put("F2", KeyEvent.VK_F2);
         KEY_MAP.put("F3", KeyEvent.VK_F3);
@@ -159,13 +161,19 @@ public class KEY {
         ArrayList<String> backList=new ArrayList<String>();
         String[] split = cmdBody.split(",");
         int[] keys = new int[split.length];
-        for (int i = 0; i < split.length; i++) {
-            keys[i] = (int) KEY_MAP.get(split[i]);
-        }
-        pressKeys(r, keys, 100);
         backList.add("KEY");
-        backList.add("1");
-        backList.add("ok");
+        try {
+            for (int i = 0; i < split.length; i++) {
+                keys[i] = (int) KEY_MAP.get(split[i]);
+            }
+            pressKeys(r, keys, 100);
+            backList.add("1");
+            backList.add("ok");
+        } catch (NullPointerException e) {
+            backList.add("2");
+            backList.add("没有对应按键");
+            backList.add(e.toString());
+        }
         return backList;
     }
 

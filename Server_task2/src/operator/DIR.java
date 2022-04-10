@@ -10,8 +10,8 @@ import java.util.Date;
 import static Utils.FilePathUtil.HierarchicalDir;
 import static Utils.FilePathUtil.combineHierDir;
 
-public class DIR {
-    public ArrayList<String> exeDir(String cmdBody) throws Exception {
+public class DIR extends BaseOperator {
+    public ArrayList<String> exe(String cmdBody) throws Exception {
         // TODO Auto-generated method stub
         ArrayList<String> backList=new ArrayList<String>();
         backList.add("DIR");

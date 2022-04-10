@@ -6,4 +6,5 @@ public class CmdServerIpSetting {
     public static String ip = "192.168.43.239";
 //    public static String ip = "192.168.43.239";
     public static int port = 8019;
+    public static int up_port = 8019;
 }

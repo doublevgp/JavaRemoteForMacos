@@ -5,6 +5,9 @@
         android:id="@+id/ctx_hotkey"
         android:title="弹出热键菜单" />
     <item
+        android:id="@+id/ctx_finder"
+        android:title="用finder打开" />
+    <item
         android:id="@+id/ctx_download"
         android:title="下载文件" />
     <item

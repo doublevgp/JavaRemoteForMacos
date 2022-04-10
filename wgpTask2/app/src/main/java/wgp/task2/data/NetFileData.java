@@ -57,7 +57,7 @@ public class NetFileData {
     public void setFileModifiedDate(String fileModifiedDate) {
         this.fileModifiedDate = fileModifiedDate;
     }
-
+    public NetFileData() {}
     public NetFileData(String fileInfo, String filePath) {
         this.filePath = filePath.split(">")[4];
 //        System.out.println("filePath:" + filePath);

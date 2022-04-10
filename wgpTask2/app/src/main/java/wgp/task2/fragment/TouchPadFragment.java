@@ -129,15 +129,17 @@ public class TouchPadFragment extends Fragment {
 
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
+            cmd=String.format("clk:left");
+            CmdClientSocket cmdClientSocket = new CmdClientSocket(ip, port, showNonUiUpdateCmdHandler);
+            cmdClientSocket.work(cmd);
             return super.onSingleTapConfirmed(e);
         }
         @Override
         public void onShowPress(MotionEvent e) {
-            cmd=String.format("clk:left");
-            CmdClientSocket cmdClientSocket = new CmdClientSocket(ip, port, showNonUiUpdateCmdHandler);
-            cmdClientSocket.work(cmd);
+//            cmd=String.format("clk:left");
+//            CmdClientSocket cmdClientSocket = new CmdClientSocket(ip, port, showNonUiUpdateCmdHandler);
+//            cmdClientSocket.work(cmd);
         }
-
 
         @Override
         public boolean onDoubleTap(MotionEvent e) {//双击

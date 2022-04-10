@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="70dp">
+
+    <ImageView
+        android:id="@+id/dlf_row_view_iv"
+        android:layout_gravity="center_vertical"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        app:srcCompat="@drawable/unknown" />
+
+    <LinearLayout
+        android:layout_width="230dp"
+        android:layout_height="match_parent"
+        android:paddingLeft="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/dlf_row_view_file_name"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:gravity="center_vertical"
+            android:text="TextView" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:gravity="bottom"
+            android:paddingBottom="6dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/dlf_row_view_file_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+
+            <TextView
+                android:id="@+id/dlf_row_view_file_path"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="3dp"
+                android:text="TextView" />
+        </LinearLayout>
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/dlf_row_view_progressbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="50dp"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/dlf_row_view_bt"
+            android:layout_gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/play" />
+    </LinearLayout>
+
+</LinearLayout>

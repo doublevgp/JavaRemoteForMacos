@@ -4,14 +4,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
-    <androidx.constraintlayout.widget.Group
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/hotkey_home_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:constraint_referenced_ids="textView3,listView2" />
-
-    <androidx.constraintlayout.widget.Group
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:title="下载列表"/>
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:constraint_referenced_ids="textView3,listView3" />
+        android:layout_height="match_parent">
+        <wgp.task2.view.MyListView
+            android:id="@+id/download_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </ScrollView>
+
 </LinearLayout>

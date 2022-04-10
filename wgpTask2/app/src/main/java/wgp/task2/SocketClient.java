@@ -72,10 +72,15 @@ public class SocketClient {
         InputStreamReader isr=new InputStreamReader(socket.getInputStream(),"UTF-8");
         bufferedReader=new BufferedReader(isr);
         String numStr = bufferedReader.readLine();
-        int linNum = Integer.parseInt(numStr);
-        for (int i = 0; i <linNum ; i++) {
-            String s = bufferedReader.readLine();
-            msgList.add(s);
+        try {
+            int linNum = Integer.parseInt(numStr);
+            for (int i = 0; i <linNum ; i++) {
+                String s = bufferedReader.readLine();
+                msgList.add(s);
+
+            }
+        } catch (NumberFormatException e) {
+            msgList.add(e.toString());
         }
         return msgList;
     }

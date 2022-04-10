@@ -22,6 +22,8 @@ public class HotKeyGenerator {
                 hotKeyDataList.add(new HotKeyData("从头放映", new ArrayList<String>(Arrays.asList("SHIFT","META","ENTER"))));
                 hotKeyDataList.add(new HotKeyData("当前放映", new ArrayList<String>(Arrays.asList("META","ENTER"))));
                 hotKeyDataList.add(new HotKeyData("退出放映", new ArrayList<String>(Arrays.asList("ESCAPE"))));
+                hotKeyDataList.add(new HotKeyData("上一页", new ArrayList<String>(Arrays.asList("UP"))));
+                hotKeyDataList.add(new HotKeyData("下一页", new ArrayList<String>(Arrays.asList("DOWN"))));
                 break;
             case "mp3":
                 hotKeyDataList.add(new HotKeyData("退出程序", new ArrayList<String>(Arrays.asList("META", "Q"))));

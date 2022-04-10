@@ -131,10 +131,10 @@ public class Server {
             System.out.println("cmdBody == " + cmdBody);
             switch (cmdHead) {
                 case "dir":
-                    backMsg = new DIR().exeDir(cmdBody);
+                    backMsg = new DIR().exe(cmdBody);
                     break;
                 case "opn":
-                    backMsg = new OPN().exeOpn(cmdBody);
+                    backMsg = new OPN().exe(cmdBody);
                     break;
                 case "key":
                     backMsg = KeyMan.exeKey(cmdBody);
@@ -152,20 +152,23 @@ public class Server {
                     backMsg = KeyMan.exePointerInfo();
                     break;
                 case "del":
-                    backMsg = new DEL().exeDel(cmdBody);
+                    backMsg = new DEL().exe(cmdBody);
                     break;
                 case "cmd":
-                    backMsg = new CMD().exeCmd(cmdBody);
+                    backMsg = new CMD().exe(cmdBody);
                     break;
                 case "cps":
-                    backMsg = new CPS().exeCps(cmdBody);
+                    backMsg = new CPS().exe(cmdBody);
                     break;
                 case "dlf": // 下载文件
+                    backMsg = new DLF().exe(cmdBody);
                     break;
             }
         }
         return backMsg;
     }
+
+
 
     private void close(Socket socket) throws IOException {
         socket.close();

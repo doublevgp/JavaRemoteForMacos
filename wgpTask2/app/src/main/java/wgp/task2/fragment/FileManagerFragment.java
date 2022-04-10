@@ -16,19 +16,23 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import wgp.task2.Dialog.FileProgressDialog;
 import wgp.task2.Dialog.HotKeyDialog;
 import wgp.task2.Dialog.InputDialog;
 import wgp.task2.MainActivity;
 import wgp.task2.R;
 import wgp.task2.data.CmdServerIpSetting;
+import wgp.task2.data.DlfData;
 import wgp.task2.data.LinkData;
 import wgp.task2.data.NetFileData;
 import wgp.task2.db.RemoteDataBase;
 import wgp.task2.operator.ShowRemoteFileHandler;
 import wgp.task2.socket.CmdClientSocket;
+import wgp.task2.socket.FileDownLoadSocketThread;
 import wgp.task2.utils.HotKeyGenerator;
 import wgp.task2.view.MyListView;
 import wgp.task2.view.RecyclerAdapter;
@@ -60,6 +64,7 @@ public class FileManagerFragment extends Fragment implements InputDialog.Callbac
         et_port.setText(String.valueOf(link_port));
         showRemoteFileHandler = new ShowRemoteFileHandler(getContext(), listView);
         clientSocket = new CmdClientSocket(CmdServerIpSetting.ip, CmdServerIpSetting.port, showRemoteFileHandler);
+        MainActivity.cmdClientSocket = clientSocket;
         showRemoteFileHandler.setClientSocket(clientSocket);
         registerForContextMenu(listView);
         recyclerView = view.findViewById(R.id.connect_recyclerview);
@@ -213,9 +218,23 @@ public class FileManagerFragment extends Fragment implements InputDialog.Callbac
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         NetFileData netFileData = (NetFileData) listView.getAdapter().getItem(menuInfo.position);
+
         switch (item.getItemId()) {
             case R.id.ctx_hotkey:
                 showHotKeyDialog(netFileData);
+                break;
+            case R.id.ctx_download:
+                if (netFileData.getFileType() == 0) {
+                    exeDownloadCmd(netFileData);
+                } else {
+                    Toast.makeText(getContext(), "暂未实现整个文件夹下载功能", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.ctx_finder:
+                if (netFileData.getFileType() == 1)
+                    clientSocket.work(String.format("opn:" + netFileData.getFilePath() + "/" + netFileData.getFileName()));
+                else
+                    clientSocket.work(String.format("opn:" + netFileData.getFilePath()));
                 break;
             case R.id.ctx_delete:
                 exeDelCmd(netFileData);
@@ -225,6 +244,25 @@ public class FileManagerFragment extends Fragment implements InputDialog.Callbac
                 break;
         }
         return super.onContextItemSelected(item);
+    }
+
+    private void exeDownloadCmd(NetFileData netFileData) {
+        /**
+         * dlf:remoteFile_path_file_name 整个下载
+         * dlf:remoteFile_path_file_name?filePosition 断点续传
+         */
+        String cmd = String.format("dlf:" + netFileData.getFilePath() + "/" + netFileData.getFileName());
+        showRemoteFileHandler.setFileCallback(new ShowRemoteFileHandler.FileCallback() {
+            @Override
+            public void onDlfCallBack(String fileName, String filePath, long fileSize, long downSize, String ip, int port) {
+                DlfData data = new DlfData(fileName, filePath, fileSize, downSize, ip, port);
+                BeginDownLoad(data);
+            }
+        });
+//        String cmd = String.format("dlf:" + netFileData.getFilePath() + "/" + netFileData.getFileName() + "?" + gotFileSize);
+        clientSocket.work(cmd);
+
+//        FileDownLoadSocketThread downloadSocket = new FileDownLoadSocketThread();
     }
 
     public void showHotKeyDialog(NetFileData netFileData){
@@ -305,4 +343,24 @@ public class FileManagerFragment extends Fragment implements InputDialog.Callbac
     public void onDefaultClick(String str) {
 //        link_name = str;
     }
+    void BeginDownLoad(final DlfData downloadFile){
+        File file = new File(downloadFile.getFile_path());
+
+        FileProgressDialog progressDialog=new FileProgressDialog(getActivity(),file,downloadFile);
+        final DlfData finalDownloadFile = downloadFile;
+        progressDialog.showDialog(new FileProgressDialog.OnDialogSubmitListener() {
+            @Override
+            public void onSubmit(long CounterSize) {
+                if(CounterSize==downloadFile.getFile_size()){
+                    Toast.makeText(getContext(),"文件保存在"+downloadFile.getFile_path(),Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+//    @Override
+//    public void onDlfCallBack(String ip, int port) {
+//        DlfData data = new DlfData(ip, port);
+//        BeginDownLoad(data);
+//    }
 }

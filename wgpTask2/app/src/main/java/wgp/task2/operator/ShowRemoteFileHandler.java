@@ -8,11 +8,16 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 
+import java.io.File;
 import java.util.ArrayList;
 
 import wgp.task2.SocketClient;
+import wgp.task2.data.CmdServerIpSetting;
 import wgp.task2.data.NetFileData;
 import wgp.task2.socket.CmdClientSocket;
+import wgp.task2.socket.FileDownLoadSocketThread;
+import wgp.task2.socket.FileUpLoadSocketThread;
+import wgp.task2.utils.CheckLocalDownloadFolder;
 import wgp.task2.view.MyListView;
 import wgp.task2.view.NetFileListAdapter;
 
@@ -21,6 +26,19 @@ public class ShowRemoteFileHandler extends Handler {
     private MyListView listView;
     ArrayList<NetFileData> netFileList;
     CmdClientSocket clientSocket;
+
+    public FileCallback getFileCallback() {
+        return fileCallback;
+    }
+
+    public void setFileCallback(FileCallback fileCallback) {
+        this.fileCallback = fileCallback;
+    }
+
+    public FileCallback fileCallback;
+    public interface FileCallback {
+        void onDlfCallBack(String fileName, String filePath, long fileSize, long downSize, String ip, int port);
+    }
     public ShowRemoteFileHandler(Context context, MyListView listView) {
         super();
         this.context = context;
@@ -50,6 +68,35 @@ public class ShowRemoteFileHandler extends Handler {
                     break;
                 case "DEL":
                     dealDel(ackMsgList);
+                    break;
+                case "DLF":
+                    if (ackMsgList.get(2).equals("ok")) {
+                        int port = Integer.parseInt(ackMsgList.get(3));
+                        long fileSize = Long.parseLong(ackMsgList.get(4));
+                        String cmd = ackMsgList.get(5);
+                        int id = cmd.indexOf(":");
+                        NetFileData netFileData = new NetFileData(ackMsgList.get(6), ackMsgList.get(6));
+                        File file = new File(CheckLocalDownloadFolder.check() + "/" + netFileData.getFileName());
+                        if (fileCallback != null) {
+                            fileCallback.onDlfCallBack(netFileData.getFileName(), file.getPath(), fileSize, file.length(), CmdServerIpSetting.ip, port);
+                        }
+//                        FileTransferBeginHandler fileTransferBeginHandler = new FileTransferBeginHandler(context, netFileData);
+//                        new FileDownLoadSocketThread(CmdServerIpSetting.ip, port, fileTransferBeginHandler, file, fileSize).start();
+                    }
+//                    new DLF().exe(ackMsgList);
+                    break;
+                case "ULF":
+                    if (ackMsgList.get(2).equals("ok")) {
+//                        String ip = ackMsgList;
+                        int port = Integer.parseInt(ackMsgList.get(3));
+                        long fileSize = Long.parseLong(ackMsgList.get(4));
+                        String cmd = ackMsgList.get(5);
+                        int id = cmd.indexOf(":");
+                        NetFileData netFileData = new NetFileData(ackMsgList.get(6), ackMsgList.get(6));
+                        File file = new File(CheckLocalDownloadFolder.check() + "/" + netFileData.getFileName());
+                        FileTransferBeginHandler fileTransferBeginHandler = new FileTransferBeginHandler(context, netFileData);
+                        new FileUpLoadSocketThread(CmdServerIpSetting.ip, port, fileTransferBeginHandler, file, fileSize).start();
+                    }
                     break;
             }
         }

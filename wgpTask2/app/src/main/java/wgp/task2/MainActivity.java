@@ -7,9 +7,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -17,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import wgp.task2.Callbacks.TouchCallback;
+import wgp.task2.Dialog.FileProgressDialog;
 import wgp.task2.Dialog.InputDialog;
 import wgp.task2.data.LinkData;
 import wgp.task2.db.RemoteDataBase;
@@ -25,18 +29,24 @@ import wgp.task2.fragment.DownloadListFragment;
 import wgp.task2.fragment.FileManagerFragment;
 import wgp.task2.fragment.HomeFragment;
 import wgp.task2.fragment.HotKeyFragment;
+import wgp.task2.fragment.LocalfileManagerFragment;
 import wgp.task2.fragment.SingleHotKeyFragment;
 import wgp.task2.fragment.TouchPadFragment;
 import wgp.task2.fragment.UploadListFragment;
 import wgp.task2.fragment.UsualLinkFragment;
+import wgp.task2.socket.CmdClientSocket;
+import wgp.task2.socket.FileDownLoadSocketThread;
+import wgp.task2.utils.PermissionUtils;
 import wgp.task2.view.LinkDataAdapter;
 
 public class MainActivity extends AppCompatActivity implements InputDialog.Callback,
-        LinkDataAdapter.ClickCallBack, TouchCallback.OnItemTouchCallbackListener {
+        LinkDataAdapter.ClickCallBack, TouchCallback.OnItemTouchCallbackListener,
+        FileDownLoadSocketThread.DoneCallback, FileProgressDialog.OnDialogSubmitListener {
     NavigationView nav;
     DrawerLayout drawerLayout;
     FragmentManager fragmentManager;
     Fragment fileManagerFragment;
+    Fragment localfileManagerFragment;
     Fragment touchPadFragment;
     Fragment homeFragment;
     Fragment usualLinkFragment;
@@ -44,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements InputDialog.Callb
     Fragment comboKeyFragment;
     Fragment downloadListFragment;
     Fragment uploadListFragment;
+    public static CmdClientSocket cmdClientSocket;
     public static List<Fragment> fragmentList = new ArrayList<Fragment>();
     RemoteDataBase remoteDataBase;
     @Override
@@ -53,6 +64,8 @@ public class MainActivity extends AppCompatActivity implements InputDialog.Callb
         fragmentManager = getSupportFragmentManager();
         drawerLayout = findViewById(R.id.drawer);
         remoteDataBase = new RemoteDataBase(this);
+        PermissionUtils.requestPermission(this, PermissionUtils.WRITE_EXTERNAL_STORAGE);
+        PermissionUtils.requestPermission(this, PermissionUtils.READ_EXTERNAL_STORAGE);
         nav = findViewById(R.id.navigation_view);
         nav.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -65,6 +78,10 @@ public class MainActivity extends AppCompatActivity implements InputDialog.Callb
                     case R.id.file_manager:
                         System.out.println("您点击了文件管理器");
                         showFileManagerFragment();
+                        break;
+                    case R.id.local_file_manager:
+                        System.out.println("您点击了本地文件");
+                        showLocalFileManagerFragment();
                         break;
                     case R.id.analog_touchpad:
                         System.out.println("您点击了模拟触摸板");
@@ -92,7 +109,28 @@ public class MainActivity extends AppCompatActivity implements InputDialog.Callb
             }
         });
         showHomeFragment();
+//        if (android.os.Build.VERSION.SDK_INT > 9) {
+//            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+//            StrictMode.setThreadPolicy(policy);
+//        }
     }
+
+    private void showLocalFileManagerFragment() {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        if (localfileManagerFragment == null) {
+            localfileManagerFragment = new LocalfileManagerFragment();
+            Bundle bundle = new Bundle();
+//            bundle.putString("weather_id", gloableWeatherId.weatherId);
+            localfileManagerFragment.setArguments(bundle);
+            fragmentList.add(localfileManagerFragment);
+            transaction.add(R.id.fragmentContainer, localfileManagerFragment);
+        }
+//        bottomNavigationView.getMenu().getItem(0).setChecked(true);
+        hideAllFragments(transaction);
+        transaction.show(localfileManagerFragment);
+        transaction.commit();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.opt_menu, menu);
@@ -269,8 +307,25 @@ public class MainActivity extends AppCompatActivity implements InputDialog.Callb
     }
 
     @Override
+    public void onDoneCallback(int port) {
+//        remoteDataBase.insertData();
+//        String cmd = "clo:" + port;
+//        cmdClientSocket.work(cmd);
+    }
+
+    @Override
     public boolean onMove(int srcPosition, int targetPosition) {
         return false;
     }
+
+    @Override
+    public void onSubmit(long CounterSize) {
+        showToast("实际下载：" + CounterSize);
+        remoteDataBase.updateFileData(); // 修改或者插入数据
+    }
+
     // endregion
+    public void showToast(String s) {
+        Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
+    }
 }

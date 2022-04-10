@@ -4,8 +4,8 @@ import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
 import static Utils.FilePathUtil.*;
-public class DEL {
-    public ArrayList<String> exeDel(String cmdBody) throws Exception {
+public class DEL extends BaseOperator {
+    public ArrayList<String> exe(String cmdBody) throws Exception {
         ArrayList<String> backList=new ArrayList<String>();
         backList.add("DEL");
         File file = new File(cmdBody);

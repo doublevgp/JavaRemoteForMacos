@@ -11,7 +11,11 @@
         <item
             android:id="@+id/file_manager"
             android:icon="@drawable/forklift"
-            android:title="文件管理器" />
+            android:title="远程文件" />
+        <item
+            android:id="@+id/local_file_manager"
+            android:icon="@drawable/forklift"
+            android:title="本地文件" />
         <item
             android:id="@+id/analog_touchpad"
             android:icon="@drawable/touchpad"
