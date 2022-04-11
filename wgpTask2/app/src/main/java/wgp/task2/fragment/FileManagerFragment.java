@@ -33,6 +33,7 @@ import wgp.task2.db.RemoteDataBase;
 import wgp.task2.operator.ShowRemoteFileHandler;
 import wgp.task2.socket.CmdClientSocket;
 import wgp.task2.socket.FileDownLoadSocketThread;
+import wgp.task2.utils.CheckLocalDownloadFolder;
 import wgp.task2.utils.HotKeyGenerator;
 import wgp.task2.view.MyListView;
 import wgp.task2.view.RecyclerAdapter;
@@ -251,7 +252,14 @@ public class FileManagerFragment extends Fragment implements InputDialog.Callbac
          * dlf:remoteFile_path_file_name 整个下载
          * dlf:remoteFile_path_file_name?filePosition 断点续传
          */
-        String cmd = String.format("dlf:" + netFileData.getFilePath() + "/" + netFileData.getFileName());
+        File file = new File(CheckLocalDownloadFolder.check() + "/" + netFileData.getFileName());
+        String cmd = "";
+        if (file.exists()) {
+            long filepos = file.length();
+            cmd = String.format("dlf:" + netFileData.getFilePath() + "/" + netFileData.getFileName() + "?" + filepos);
+        } else {
+            cmd = String.format("dlf:" + netFileData.getFilePath() + "/" + netFileData.getFileName());
+        }
         showRemoteFileHandler.setFileCallback(new ShowRemoteFileHandler.FileCallback() {
             @Override
             public void onDlfCallBack(String fileName, String filePath, long fileSize, long downSize, String ip, int port) {
@@ -259,10 +267,7 @@ public class FileManagerFragment extends Fragment implements InputDialog.Callbac
                 BeginDownLoad(data);
             }
         });
-//        String cmd = String.format("dlf:" + netFileData.getFilePath() + "/" + netFileData.getFileName() + "?" + gotFileSize);
         clientSocket.work(cmd);
-
-//        FileDownLoadSocketThread downloadSocket = new FileDownLoadSocketThread();
     }
 
     public void showHotKeyDialog(NetFileData netFileData){

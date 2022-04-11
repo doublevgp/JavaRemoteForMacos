@@ -28,4 +28,17 @@
         android:columnWidth="80dp"
         android:focusable="false"
         android:numColumns="3"/>
+    <Button
+        android:id="@+id/hotkey_bt"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:text="back"/>
+    <Button
+        android:id="@+id/hotkey_add_bt"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:text="add"
+        android:visibility="invisible"/>
 </LinearLayout>

@@ -35,8 +35,8 @@ public class DLF extends BaseOperator {
         return backList; // 传给客户端的信息包括  port + 文件大小
     }
     public final ArrayList<String> exe(String cmdBody) throws AWTException, IOException {
+        ArrayList<String> localArrayList = new ArrayList<>();
         long l1 = 0L;
-        ArrayList<String> localArrayList = new ArrayList<String>();
         String[] s = getStringArray(cmdBody);
         if ((s != null) && (s.length == 2)) {
             cmdBody = s[0];

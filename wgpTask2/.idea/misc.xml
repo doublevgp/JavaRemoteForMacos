@@ -14,8 +14,9 @@
         <entry key="app/src/main/res/layout/drawer_menu_layout.xml" value="0.1983695652173913" />
         <entry key="app/src/main/res/layout/home_fragment.xml" value="0.28229166666666666" />
         <entry key="app/src/main/res/layout/hotkey_fragment.xml" value="0.14895833333333333" />
-        <entry key="app/src/main/res/layout/hotkey_home_fragment.xml" value="0.14895833333333333" />
+        <entry key="app/src/main/res/layout/hotkey_home_fragment.xml" value="0.24752475699101725" />
         <entry key="app/src/main/res/layout/hotkey_home_grid_row_view.xml" value="0.14895833333333333" />
+        <entry key="app/src/main/res/layout/inputdialog_two_view.xml" value="0.16822916666666668" />
         <entry key="app/src/main/res/layout/list_row_view.xml" value="0.24365942028985507" />
         <entry key="app/src/main/res/layout/local_file_fragment.xml" value="0.21014492753623187" />
         <entry key="app/src/main/res/layout/navigation_drawer_header.xml" value="0.14895833333333333" />
