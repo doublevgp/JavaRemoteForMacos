@@ -77,7 +77,8 @@ public class FileProgressDialog {
         fileinfo.setText(fileData.getFile_name());
         ImageView icon = v.findViewById(R.id.dlf_row_view_iv);
         icon.setImageResource(FileIconUtil.ChoseFileIconByFileSuffixName(fileData.getSuffixName()));
-        final ProgressBar bar=v.findViewById(R.id.dlf_row_view_progressbar);
+        final ProgressBar bar = v.findViewById(R.id.dlf_row_view_progressbar);
+
         bar.setMax(100);
         bar.setProgress((int) (fileData.getFile_down_size() * 100 / fileData.getFile_size()) );
         System.out.println(fileData.getFile_down_size() + " / " + fileData.getFile_size());
