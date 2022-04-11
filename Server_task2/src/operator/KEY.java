@@ -139,6 +139,24 @@ public class KEY extends BaseOperator {
         backList.add("ok");
         return backList;
     }
+    public ArrayList<String> exeMoa(String cmdBody) {
+        ArrayList<String> backList=new ArrayList<String>();
+        String[] split = cmdBody.split(",");
+        int x = Integer.parseInt(split[0]), y = Integer.parseInt(split[1]);
+//        Point point = getPointerInfo();
+//        x += point.x;
+//        y += point.y;
+        x = max(0, x);
+        x = min(screenSize.width, x);
+        y = max(0, y);
+        y = min(screenSize.height, y);
+        System.out.println(x + " " + y);
+        moveMouse(r, x, y);
+        backList.add("MOV");
+        backList.add("1");
+        backList.add("ok");
+        return backList;
+    }
     public ArrayList<String> exeMov(String cmdBody) {
         ArrayList<String> backList=new ArrayList<String>();
         String[] split = cmdBody.split(",");
@@ -159,16 +177,24 @@ public class KEY extends BaseOperator {
     }
     public ArrayList<String> exeKey(String cmdBody) throws Exception {
         ArrayList<String> backList=new ArrayList<String>();
+        int ind = cmdBody.indexOf("?"); // 次数
+        int keyNum = 1;
+        if (ind != -1) {
+            keyNum = Integer.parseInt(cmdBody.substring(ind + 1));
+            cmdBody = cmdBody.substring(0, ind);
+        }
         String[] split = cmdBody.split(",");
         int[] keys = new int[split.length];
         backList.add("KEY");
         try {
-            for (int i = 0; i < split.length; i++) {
-                keys[i] = (int) KEY_MAP.get(split[i]);
+            for (int c = 1; c <= keyNum; c++) {
+                for (int i = 0; i < split.length; i++) {
+                    keys[i] = (int) KEY_MAP.get(split[i]);
+                }
+                pressKeys(r, keys, 10);
+                backList.add("1");
+                backList.add("ok");
             }
-            pressKeys(r, keys, 100);
-            backList.add("1");
-            backList.add("ok");
         } catch (NullPointerException e) {
             backList.add("2");
             backList.add("没有对应按键");
@@ -237,7 +263,7 @@ public class KEY extends BaseOperator {
     public static void pressKeys(Robot r, int[] keys, int delay) {
         for (int i = 0; i < keys.length; i++) {
             r.keyPress(keys[i]);
-            r.delay(10);
+            r.delay(delay);
         }
         for (int i = keys.length - 1; i >= 0; i--) {
             r.keyRelease(keys[i]);

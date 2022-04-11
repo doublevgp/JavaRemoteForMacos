@@ -14,6 +14,22 @@ public class HotKeyGenerator {
         String file_name = netFileData.getFileName();
         String[] split = file_name.split("\\.");//要使用\\转义符
         String suffixName = split[split.length - 1];
+        System.out.println("file suffixName");
+        switch (suffixName) {
+            case "pptx":
+            case "ppt":
+                suffixName = "ppt";
+                break;
+            case "mp3":
+                break;
+            case "png":
+            case "jpg":
+                suffixName = "jpg";
+                break;
+            default:
+                suffixName = "default";
+                break;
+        }
         return hotKeyDataHashMap.get(suffixName);
 //        ArrayList<HotKeyData> hotKeyDataList = new ArrayList<>();
 //        String file_name = netFileData.getFileName();
@@ -121,7 +137,7 @@ public class HotKeyGenerator {
             hotKeyDataList.add(new HotKeyData("最大化", new ArrayList<String>(Arrays.asList("CONTROL", "OPTION", "ENTER"))));
             hotKeyDataList.add(new HotKeyData("最小化", new ArrayList<String>(Arrays.asList("META", "M"))));
             hotKeyDataList.add(new HotKeyData("关闭此页", new ArrayList<String>(Arrays.asList("META", "W"))));
-            hotKeyDataList.add(new HotKeyData("打开网页", new ArrayList<String>()));
+            hotKeyDataList.add(new HotKeyData("爱奇艺搜索叶问4", new ArrayList<String>()));
             hotKeyDataList.add(new HotKeyData("下一个焦点", new ArrayList<String>(Arrays.asList("TAB"))));
             hotKeyDataList.add(new HotKeyData("回车", new ArrayList<String>(Arrays.asList("ENTER"))));
             hotKeyDataList.add(new HotKeyData("粘贴输入内容", new ArrayList<String>()));

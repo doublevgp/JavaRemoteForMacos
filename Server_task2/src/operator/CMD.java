@@ -30,6 +30,7 @@ public class CMD extends BaseOperator {
                 System.out.println(String.format("%d split string is %s", i, split[i]));
                 backList.add(split[i]);
             }
+            Thread.sleep(3000);
         } catch (Exception e) {
             e.printStackTrace();
         }

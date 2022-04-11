@@ -190,6 +190,11 @@ public class MainActivity extends AppCompatActivity implements InputDialog.Callb
             downloadListFragment = new DownloadListFragment();
             fragmentList.add(downloadListFragment);
             transaction.add(R.id.fragmentContainer, downloadListFragment);
+        } else {
+            fragmentList.remove(downloadListFragment);
+            downloadListFragment = new DownloadListFragment();
+            fragmentList.add(downloadListFragment);
+            transaction.add(R.id.fragmentContainer, downloadListFragment);
         }
         hideAllFragments(transaction);
         transaction.show(downloadListFragment);

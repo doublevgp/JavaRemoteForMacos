@@ -94,6 +94,7 @@ public class HotKeyHomeFragment extends Fragment {
                     InputDialog dialog = new InputDialog();
                     dialog.setTitle("Add Hotkey");
                     dialog.setNum(2);
+                    dialog.setType("hhh");
                     dialog.setHandler(new Handler(new Handler.Callback() {
                         @Override
                         public boolean handleMessage(@NonNull Message msg) {
@@ -133,19 +134,29 @@ public class HotKeyHomeFragment extends Fragment {
                 dialog.setType("wtc");
                 dialog.setKeyname(hotkeyList.get(position).getHotKeyName());
                 dialog.setKeycontent(hotkeyList.get(position).getHotKeyContent());
-//                dialog.setHandler(new Handler(new Handler.Callback() {
-//                    @Override
-//                    public boolean handleMessage(@NonNull Message msg) {
-//                        Bundle bundle = msg.getData();
-//                        String name = bundle.getString(InputDialog.KEY_NAME);
-//                        String content = bundle.getString(InputDialog.KEY_CONTENT);
-//                        ArrayList<HotKeyData> hotKeyDataList = HotKeyGenerator.hotKeyDataHashMap.get(fileTypeData.getFiletype());
+                dialog.setHandler(new Handler(new Handler.Callback() {
+                    @Override
+                    public boolean handleMessage(@NonNull Message msg) {
+                        Bundle bundle = msg.getData();
+                        if (bundle.getBoolean("want_delete") == false) {
+                            String name = bundle.getString(InputDialog.KEY_NAME);
+                            String content = bundle.getString(InputDialog.KEY_CONTENT);
+                            ArrayList<HotKeyData> hotKeyDataList = HotKeyGenerator.hotKeyDataHashMap.get(fileTypeData.getFiletype());
+                            hotKeyDataList.set(position, new HotKeyData(name, content));
 //                        hotKeyDataList.add(new HotKeyData(name, content));
-//                        HotKeyGenerator.hotKeyDataHashMap.replace(fileTypeData.getFiletype(), hotKeyDataList);
-//                        showToast("click ok");
-//                        return false;
-//                    }
-//                }));
+                            HotKeyGenerator.hotKeyDataHashMap.replace(fileTypeData.getFiletype(), hotKeyDataList);
+                            showToast("修改成功");
+                        } else {
+                            ArrayList<HotKeyData> hotKeyDataList = HotKeyGenerator.hotKeyDataHashMap.get(fileTypeData.getFiletype());
+                            hotKeyDataList.remove(position);
+//                        hotKeyDataList.add(new HotKeyData(name, content));
+                            HotKeyGenerator.hotKeyDataHashMap.replace(fileTypeData.getFiletype(), hotKeyDataList);
+                            showToast("删除成功");
+                            updateHotKeyMenu(hotKeyDataList);
+                        }
+                        return false;
+                    }
+                }));
                 dialog.show(getFragmentManager());
                 showToast("暂不支持修改");
             }

@@ -11,6 +11,9 @@
         android:id="@+id/ctx_download"
         android:title="下载文件" />
     <item
+        android:id="@+id/ctx_add_list"
+        android:title="添加到下载列表" />
+    <item
         android:id="@+id/ctx_delete"
         android:title="删除文件" />
     <item

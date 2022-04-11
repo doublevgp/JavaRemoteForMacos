@@ -60,9 +60,35 @@ public class HotKeyDialog extends DialogFragment {
                             inputDialog.show(fragmentManager);
                             inputDialog.setType("cps");
                             break;
-                        case "打开网页":
-                            inputDialog.show(fragmentManager);
-                            inputDialog.setType("opn");
+                        case "爱奇艺搜索叶问4":
+                            try {
+//                                String cmd = "for:1>cmd:open https://iqiyi.com>clk:left>key:TAB?6>cps:叶问4>key:ENTER";
+                                String cmd = "for:1>cmd:open https://iqiyi.com>moa:757,137>clk:left>cps:叶问4>key:ENTER";
+                                clientSocket.work(cmd);
+//                                cmd = String.format("cmd:open %s", "https://iqiyi.com");
+    //                            System.out.println("DefinedCMD is " + cmd);
+//                                clientSocket.work(cmd);
+//                                Thread.sleep(5000);
+//                                cmd = String.format("clk:left");
+//                                clientSocket.work(cmd);
+                                Thread.sleep(1000);
+////                                for (int i = 1; i <= 6; i++) {
+//                                cmd = String.format("key:TAB?6");
+//                                clientSocket.work(cmd);
+//                                Thread.sleep(100);
+////                                }
+//                                cmd = String.format("cps:叶问4");
+//                                clientSocket.work(cmd);
+//                                Thread.sleep(100);
+//                                cmd = String.format("key:ENTER");
+//                                clientSocket.work(cmd);
+//                                Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+//                            clientSocket.work("opn");
+//                            inputDialog.show(fragmentManager);
+//                            inputDialog.setType("opn");
                             break;
                     }
                 }

@@ -82,6 +82,9 @@ public class DealCmd {
                 case "mov":
                     backMsg = new KEY().exeMov(cmdBody);
                     break;
+                case "moa":
+                    backMsg = new KEY().exeMoa(cmdBody);
+                    break;
                 case "rol":
                     backMsg = new KEY().exeRol(cmdBody);
                     break;
@@ -102,8 +105,12 @@ public class DealCmd {
                     break;
                 case "ulf":
                     backMsg = new ULF().exe(cmdBody);
+                    break;
                 case "clo": // 关闭port
                     backMsg = new CLO().exe(cmdBody);
+                    break;
+                case "for":
+                    backMsg = new FOR().exe(cmdBody);
                     break;
             }
         }

@@ -231,6 +231,13 @@ public class FileManagerFragment extends Fragment implements InputDialog.Callbac
                     Toast.makeText(getContext(), "暂未实现整个文件夹下载功能", Toast.LENGTH_SHORT).show();
                 }
                 break;
+            case R.id.ctx_add_list:
+                if (netFileData.getFileType() == 0) {
+                    exeAddDlfListCmd(netFileData);
+                } else {
+                    Toast.makeText(getContext(), "暂未实现整个文件夹下载功能", Toast.LENGTH_SHORT).show();
+                }
+                break;
             case R.id.ctx_finder:
                 if (netFileData.getFileType() == 1)
                     clientSocket.work(String.format("opn:" + netFileData.getFilePath() + "/" + netFileData.getFileName()));
@@ -246,7 +253,31 @@ public class FileManagerFragment extends Fragment implements InputDialog.Callbac
         }
         return super.onContextItemSelected(item);
     }
-
+    private void exeAddDlfListCmd(NetFileData netFileData) {
+        /**
+         * dlf:remoteFile_path_file_name 整个下载
+         * dlf:remoteFile_path_file_name?filePosition 断点续传
+         */
+        File file = new File(CheckLocalDownloadFolder.check() + "/" + netFileData.getFileName());
+        String cmd = "";
+        if (file.exists()) {
+            long filepos = file.length();
+            cmd = String.format("dlf:" + netFileData.getFilePath() + "/" + netFileData.getFileName() + "?" + filepos);
+        } else {
+            cmd = String.format("dlf:" + netFileData.getFilePath() + "/" + netFileData.getFileName());
+        }
+        showRemoteFileHandler.setFileCallback(new ShowRemoteFileHandler.FileCallback() {
+            @Override
+            public void onDlfCallBack(String fileName, String filePath, long fileSize, long downSize, String ip, int port) {
+                DlfData data = new DlfData(fileName, filePath, fileSize, downSize, ip, port);
+                if (DownloadListFragment.FileExistListMap.get(fileName) == null) {
+                    DownloadListFragment.FileExistListMap.put(fileName, true);
+                    DownloadListFragment.dlfDataList.add(data);
+                }
+            }
+        });
+        clientSocket.work(cmd);
+    }
     private void exeDownloadCmd(NetFileData netFileData) {
         /**
          * dlf:remoteFile_path_file_name 整个下载
@@ -264,6 +295,9 @@ public class FileManagerFragment extends Fragment implements InputDialog.Callbac
             @Override
             public void onDlfCallBack(String fileName, String filePath, long fileSize, long downSize, String ip, int port) {
                 DlfData data = new DlfData(fileName, filePath, fileSize, downSize, ip, port);
+//                if (!DownloadListFragment.FileExistListMap.get(fileName)) {
+//                    DownloadListFragment.dlfDataList.add(data);
+//                }
                 BeginDownLoad(data);
             }
         });

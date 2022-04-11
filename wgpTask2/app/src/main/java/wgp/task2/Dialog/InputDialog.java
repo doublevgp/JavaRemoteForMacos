@@ -116,26 +116,46 @@ public class InputDialog extends DialogFragment {
                 System.out.println("hi");
                 et_name.setText(keyname);
                 et_content.setText(keycontent);
-                et_name.setFocusableInTouchMode(false);
-                et_content.setFocusableInTouchMode(false);
+//                et_name.setFocusableInTouchMode(false);
+//                et_content.setFocusableInTouchMode(false);
+                builder.setView(view).setNegativeButton("删除", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Message msg = handler.obtainMessage();
+                        Bundle bundle = new Bundle();
+                        bundle.putBoolean("want_delete", true);
+                        msg.setData(bundle);
+//                    msg.what = 1;
+                        handler.sendMessage(msg);
+                    }
+                });
+            } else {
+                builder.setView(view).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
             }
             builder.setView(view).setPositiveButton("确认", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    if (type.equals("wtc")) {
-
-                    } else {
+//                    if (type.equals("wtc")) {
+//
+//                    } else {
                         String name = et_name.getText().toString();
                         String content = et_content.getText().toString();
                         Message msg = handler.obtainMessage();
                         Bundle bundle = new Bundle();
+                        bundle.putBoolean("want_delete", false);
                         bundle.putString(KEY_NAME, name);
                         bundle.putString(KEY_CONTENT, content);
                         msg.setData(bundle);
                         handler.sendMessage(msg);
                     }
-                }
+//                }
             });
+
         }
 
         return builder.create();
